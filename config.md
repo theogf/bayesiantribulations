@@ -6,7 +6,7 @@ The website_* must be defined for the RSS to work
 @def website_title = "Bayesian Tribulations"
 @def website_descr = "Tribulations in a Bayesian life"
 @def website_url   = "https://theogf.github.io/bayesiantribulations/"
-@def prep
+@def prepath = "bayesiantribulations"
 
 @def author = "Theo Galy-Fajou"
 
