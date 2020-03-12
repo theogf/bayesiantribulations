@@ -17,6 +17,14 @@ For instance:
 ------------------------------------------------------->
 \newcommand{\reals}{\mathbb R}
 \newcommand{\scal}[1]{\langle #1 \rangle}
+\newcommand{\deriv}[2]{\frac{d#1}{d#2}}
+\newcommand{\bx}{\boldsymbol{x}}
+\newcommand{\derivk}[1]{\frac{dk(\boldsymbol{x},\boldsymbol{x}')}{d#1}}
+\newcommand{\norm}[1]{||#1||}
+\newcommand{\KL}{\text{KL}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\diag}{\text{diag}}
+\newcommand{\expec}[2]{\mathbb{E}_{#1}\left[#2\right]}
 
 
 <!-- Put a box around something and pass some css styling to the box
