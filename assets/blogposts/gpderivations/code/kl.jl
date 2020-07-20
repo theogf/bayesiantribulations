@@ -1,6 +1,11 @@
 # This file was generated, do not modify it. # hide
-d2KL_dSS(Σ) = 0.5*kron(inv(Σ),inv(Σ))
- analytic = d2KL_dSS(Σ)
-# @show autodiff = ForwardDiff.hessian(Σ->KL(μ,Σ,μ₀,K),Σ)
-# plot(heatmap(analytic,title="Analytic"),heatmap(autodiff,title="AutoDiff"),heatmap(analytic-autodiff,title="Difference"),yflip=true,layout=(1,3)) # hide
-# savefig(joinpath(@OUTPUT,"d2KLdSigmaSigma.svg")) # hide
+d2KL_dSS(Σ) = 0.5 * kron(inv(Σ), inv(Σ))
+analytic = d2KL_dSS(Σ)
+autodiff = ForwardDiff.hessian(Σ) do x
+	KL(μ, x, μ₀, K)
+end
+plot(heatmap(analytic,title="Analytic"), # hide
+		heatmap(autodiff,title="AutoDiff"), # hide
+		heatmap(analytic-autodiff,title="Difference"), # hide
+		yflip=true,layout=(1,D), ticks = 1:D^2, clims=extrema(vcat(analytic,autodiff))) # hide
+savefig(joinpath(@OUTPUT,"d2KLdSigmaSigma.svg")) # hide

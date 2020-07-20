@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/libs/katex/katex.min.css">
+     
+  
+  <link rel="stylesheet" href="/css/franklin.css">
+  <link rel="stylesheet" href="/css/poole_hyde.css">
+  <!-- style adjustments -->
+  <style>
+    html {font-size: 17px;}
+    .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;}
+    @media (min-width: 940px) {
+      .franklin-content {width: 100%; margin-left: auto; margin-right: auto;}
+    }
+    @media (max-width: 768px) {
+      .franklin-content {padding-left: 6%; padding-right: 6%;}
+    }
+  </style>
+  <link rel="icon" href="/assets/favicon.png">
+   <title>ICML 2020</title>  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1><a href="/">Bayesian Tribulations</a></h1>
+      <p class="lead">Unexpected computational events!</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item " href="/">Home</a>
+      <a class="sidebar-nav-item active" href="/blogposts/">Blog Posts</a>
+      <a class="sidebar-nav-item " href="/publications/">Publications</a>
+    </nav>
+    <p>&copy; Theo Galy-Fajou.</p>
+  </div>
+</div>
+<div class="content container">
+<!-- Content appended here -->
+<div class="franklin-content"><h1 id="icml_2020"><a href="#icml_2020">ICML 2020</a></h1>
+<p>So the <a href="https://icml.cc/">International Conference on Machine Learning &#40;ICML&#41;</a> just ended and it was overall a great experience for me.</p>
+<h2 id="my_favorite_talks"><a href="#my_favorite_talks">My favorite talks</a></h2>
+<p>This blog post will aim at presenting some of the talks I really enjoyed watching. They are more or less in my order of preference. Clicking on the title or the authors will take you to the ICML website for which you need a registration. The link to the paper is accessible regardless.</p>
+<ul>
+<li><h3>1. <a href="https://icml.cc/virtual/2020/poster/6629">Black-Box Variational Inference as a Parametric Approximation to Langevin Dynamics</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Matthew Hoffman">Matt Hoffman</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Yian Ma">Yian Ma</a>,<a href="https://proceedings.icml.cc/static/paper_files/icml/2020/5310-Paper.pdf">&#91;paper&#93;</a></h3>
+<p>Matt Hoffman strikes again&#33; This work is more about a high-level understanding of the difference between <em>variational inference</em> &#40;<em>VI</em>&#41; and <em>Langevin dynamics</em>. Two topics I am highly interested in.</p>
+<p>Here is what I got from it: The general consensus is that sampling methods &#40;like the <a href="https://en.wikipedia.org/wiki/Metropolis-adjusted_Langevin_algorithm">Metropolis Adjusted Langevin Algorithm</a>&#41; are less biased then VI methods like <a href="https://arxiv.org/abs/1401.0118">Black-Box Variational Inference</a> &#40;BBVI&#41; since they converge to the true target distribution and are not limited to some parametrization. However VI methods have faster convergence and it is easier to assess that they have reached their optima.</p>
+<p>What Hoffman and Ma shows, is that the dynamics of both methods, which are essentially relying on sampling &#40;one for estimating the distribution and one for estimating its gradients&#41; or extremely similar. This kind of results appear more and more in recent papers like the paper <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf">Stochastic Gradient and Langevin Processes</a> from the same conference.</p>
+<p>Based on this equivalence they show that MALA can be interpreted as some kind of non-parametric BBVI. And that if one does not wait for the convergence of the sampler, decent results can be obtained already. It turns out that for some cases that these results are better or equal than the ones of BBVI. This is definitely thought-provoking&#33; Finally, they argue that with parallelization it is now easier to run multiple chains and that this can help to outperform VI approaches.</p>
+<p>I really recommend watching the talk as on top of the interesting work, Matt Hoffman is an amazing speaker&#33;</p>
+</li>
+<li><h3>2. <a href="https://icml.cc/virtual/2020/poster/6234">All in the &#40;Exponential&#41; Family: Information Geometry and Thermodynamic Variational Inference</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Rob Brekelmans">Rob Brekelmans</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Vaden Masrani">Vaden Masrani</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Frank Wood">Frank Wood</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Greg Ver Steeg">Greg Ver Steeg</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Aram Galstyan">Aram Galstyan</a>, <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/2826-Paper.pdf">&#91;paper&#93;</a></h3>
+<p>This paper is based on the <a href="https://arxiv.org/abs/1907.00031">Thermodynamic Variational Objective paper</a> which have yet to read&#33; But the general idea it that we replace the ELBO by a series of &quot;tempered&quot; ELBO, where the variational distribution is a mixture between a variational family \(q_\phi\) and the joint distribution \(p(z,x)\).</p>
+\[\pi_\beta(z|x) \propto  q_\phi(z|x)^{1-\beta}p_\theta(x, z)^\beta\]
+<p>By progressively going from \(\beta=0\) to \(\beta = 1\) we go from the variational distribution to the true posterior. This gives us a much more exact estimate of the log-evidence. For those interested in this approach there is <a href="http://eriqande.github.io/sisg_mcmc_course/thermodynamic-integration.nb.html">this blog post</a> but I will probably try to write my own.</p>
+<p>Now one normally integrate over a couple of \(\beta\) but they show that by choosing the right \(\beta\) one can already improve the ELBO value. To do this they rewrite \(\pi_\beta\) as an exponential family :</p>
+\[\pi_\beta(z|x) = q_\phi\exp\left[\beta \log\frac{p_\theta(x,z)}{q_\phi(z|x)} - \log Z_\beta(x)\right]\]
+<p>To be honest I am not sure how this works for \(\beta\) :slightly<em>smiling</em>face:</p>
+<p>They also show that one can when integrating from \(\beta=0\) to \(\beta=1\), one can automatically find the best step-size.</p>
+<p>From the discussions one of the pit-falls of the methods seems to be the dimensionality of the problem. The expectations computed require importance sampling, which is known to be weak in high-dimensions.</p>
+</li>
+<li><h3>3. <a href="https://icml.cc/virtual/2020/poster/6476">Involutive MCMC: One Way to Derive Them All</a> <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/4339-Paper.pdf">&#91;paper&#93;</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Kirill Neklyudov">Kirill Neklyudov</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Max Welling">Max Welling</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Evgenii Egorov">Evgenii Egorov</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Dmitry Vetrov">Dmitry Vetrov</a>,</h3>
+<p>Generalization papers are always interesting because they bring a higher level of what some algorithms do. In this talk they aim at bringing a lot of <strong>Markov Chain Monte Carlo</strong> &#40;MCMC&#41; algorithms under one hood. :eye:</p>
+<p>The basic idea of MCMC is to sample from a distribution by moving in the variable domain. Every move is subject to a rejection step, based on probability of the sample and the probability of the move. The samples collected will then be assumed to come from the target distribution. More formally the chain is</p>
+\[x_{i+1} \sim t(x|x_i)\]
+<p>where the condition is that the <strong>kernel</strong> is density invariant : \(\int t(x'|x)p(x)dx = p(x')\)
+<p>One such kernel is \(t(x'|x) = \delta(x'-f(x))\) where \(f(x)\) has to respect the condition</p>
+\[ p(x) = p(f(x))\left|\frac{\partial f}{\partial x}\right| = p(f^{-1}(x))\left|\frac{\partial f^{-1}}{\partial x}\right|\]
+<p>When adding the acceptance step one gets the following kernel</p>
+\[t(x'|x) = (x' = f(x))\min\left[1, \frac{p(f(x))}{p(x)}\left|\frac{\partial f}{\partial x}\right|\right] +  (x' = x)\left( 1 - \min\left[1, \frac{p(f(x))}{p(x)}\left|\frac{\partial f}{\partial x}\right|\right]\right)\]
+<p>Now the problem with getting a \(f\) satisfying this condition is that you will end up cycling between two locations. To solve this problem we need an additional auxiliary variable \(v\). </p>
+<p>The <strong>involution</strong> restriction is now relaxed to \(f(x, v) = f^{-1}(x, v)\) . If we take the Metropolis Hasting algorithm this would be sample \(v~p(v|x)\) our proposal. For example for the random walk algorithm, this would mean sampling from a Gaussian centered in \(x\) . Then \(f(x, v) = [v,x]\) &#40;notice the permutation&#41;. The acceptance rate gives then \(P = \min \left\{ 1, \frac{p(v,x)}{p(x,v)}\right\}\)
+<p>Following this definition, they list a series of tricks including additional auxiliary augmentations, additional involutions and deterministic map.</p>
+<p>This talk really fascinated me as it really gives openings to create new and more efficient sampling algorithms&#33;</p>
+</li>
+</ul>
+<h2 id="other_talks"><a href="#other_talks">Other talks</a></h2>
+<p>Here are other presentations that really caught my attention and that I will probably explore later</p>
+<ul>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6430">Scalable Exact Inference in Multi-Output Gaussian Processes</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Wessel Bruinsma">Wessel Bruinsma</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Eric Perim Martins">Eric Perim Martins</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;William Tebbutt">William Tebbutt</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Scott Hosking">Scott Hosking</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Arno Solin">Arno Solin</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Richard Turner">Richard E Turner</a>,<a href="https://proceedings.icml.cc/static/paper_files/icml/2020/4027-Paper.pdf">&#91;paper&#93;</a></p>
+<p>General framework for multi-output GPs with a smart projection to reduce the complexity of the problem. It looks very sound  theoretically </p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/5898">Sparse Gaussian Processes with Spherical Harmonic Features</a> https://icml.cc/virtual/2020/poster/5898<a href="https://proceedings.icml.cc/static/paper_files/icml/2020/906-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>Augmenting the data with an additional parameter &#40;same for all data&#41; and then projecting the data on an hypersphere to use spherical harmonics as inducing points</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6461">Efficiently sampling functions from Gaussian process posteriors</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;James Wilson">James Wilson</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Viacheslav Borovitskiy">Slava Borovitskiy</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Alexander Terenin">Alexander Terenin</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Peter Mostowsky">Peter Mostowsky</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Marc Deisenroth">Marc Deisenroth</a>, <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/4232-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>By separating the contribution of the prior and the data, one can sample more efficiently &#40;linear time&#33;&#41; by using random fourier features for the prior.</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/5804">Automatic Reparameterisation of Probabilistic Programs</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Maria Gorinova">Maria Gorinova</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Dave Moore">Dave Moore</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Matthew Hoffman">Matt Hoffman</a>,<a href="https://proceedings.icml.cc/static/paper_files/icml/2020/271-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>By creating an interpolation between the centered version and non-centered version of a graphical model one can find the optimal representation for sampling/inference.</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6149">Stochastic Differential Equations with Variational Wishart  Diffusions</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Martin Jørgensen">Martin Jørgensen</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Marc Deisenroth">Marc Deisenroth</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Hugh Salimbeni">Hugh Salimbeni</a>,<a href="https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>When one wants to represent noise with a non-stationary full covariance depending on time a Wishart process helps to determine it. The technique use GPs for the cholesky parameters and present a low-rank approximation for efficiency</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/5923">Stochastic Gradient and Langevin Processes</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Xiang Cheng">Xiang Cheng</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Dong Yin">Dong Yin</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Peter Bartlett">Peter Bartlett</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Michael Jordan">Michael Jordan</a> <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>Show equivalence between Stochastic Gradient Descent &#40;SGD&#41; and Langeving processes &#40;them again&#33;&#41;</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6650">Variance Reduction and Quasi-Newton for Particle-Based Variational Inference</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Michael Zhu">Michael Zhu</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Chang Liu">Chang Liu</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Jun Zhu">Jun Zhu</a>, <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/5434-Paper.pdf">&#91;paper&#93;</a> </p>
+<p>Preconditioners for optimization are not straight forward in the particle-based optimization framework. This work aims at solving that</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6649">Learning the Stein Discrepancy for Training and Evaluating Energy-Based Models without Sampling</a> <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Will Grathwohl">Will Grathwohl</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Kuan-Chieh Wang">Kuan-Chieh Wang</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Joern-Henrik Jacobsen">Jörn Jacobsen</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;David Duvenaud">David Duvenaud</a>, <a href="https://icml.cc/virtual/2020/papers?filter&#61;authors&amp;search&#61;Richard Zemel">Richard Zemel</a>, <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/5430-Paper.pdf">&#91;paper&#93;</a></p>
+<p>Stein Discrepancy is complicated to use, and the kernelized versions has a lot of flaws, instead they propose to learn a constrained neural net to replace the kernel and obtain better results</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6023">Non-convex Learning via Replica Exchange Stochastic Gradient MCMC</a> <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/1632-Paper.pdf">&#91;paper&#93;</a> :star::star::star::star:</p>
+</li>
+<li><p><a href="https://icml.cc/virtual/2020/poster/6821">Handling the Positive-Definite Constraint in the Bayesian Learning Rule</a> <a href="https://proceedings.icml.cc/static/paper_files/icml/2020/6575-Paper.pdf">&#91;paper&#93;</a> :star::star::star::star:</p>
+</li>
+</ul>
+<h2 id="the_online_format"><a href="#the_online_format">The online format</a></h2>
+<p>Due to COVID the conference was naturally online, which was for me a double-edged sword. On one hand it is amazing to be able to parse the presentations one by one and to take time to understand each topic. On the other hand, the lack of physical presence made it quasi-impossible to network with other people.</p>
+<p>I went to a few poster sessions, aka local Zoom meetings, and it was definitely a slightly awkward experience. You suddenly end up in front of the multiple authors. It definitely puts a lot more pressure. If there is one point that needs to be improved it is this one&#33;<div class="page-foot">
+  <div class="copyright">
+    &copy; Theo Galy-Fajou. Last modified: July 20, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+  </div>
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>  <!-- div: content container -->
+    
+        <script src="/libs/katex/katex.min.js"></script>
+<script src="/libs/katex/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+  </body>
+</html>
