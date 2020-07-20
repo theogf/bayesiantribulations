@@ -1,6 +1,7 @@
 @def title = "ICML 2020"
 @def hasmath = true
 @def hascode = false
+@def comment_issue_id = 1
 
 
 # ICML 2020
@@ -9,9 +10,11 @@ So the [International Conference on Machine Learning (ICML)](https://icml.cc/) j
 
 ## My favorite talks
 
-This blog post will aim at presenting some of the talks I really enjoyed watching. They are more or less in my order of preference. Clicking on the title or the authors will take you to the ICML website for which you need a registration. The link to the paper is accessible regardless.
+This blog post will aim at presenting some of the talks I really enjoyed watching. They are more or less in my order of preference. Clicking on the title will take you to the ICML website for which you need a registration. The link to the paper is accessible regardless.
 
-- ### 1. [Black-Box Variational Inference as a Parametric Approximation to Langevin Dynamics](https://icml.cc/virtual/2020/poster/6629) [Matt Hoffman](https://icml.cc/virtual/2020/papers?filter=authors&search=Matthew Hoffman), [Yian Ma](https://icml.cc/virtual/2020/papers?filter=authors&search=Yian Ma),[[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5310-Paper.pdf)
+- ### . [Black-Box Variational Inference as a Parametric Approximation to Langevin Dynamics](https://icml.cc/virtual/2020/poster/6629) Matt Hoffman, Yian Ma [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5310-Paper.pdf)
+
+  ![](/assets/icml20/bbvi_vs_langevin.png)
 
   Matt Hoffman strikes again! This work is more about a high-level understanding of the difference between *variational inference* (*VI*) and *Langevin dynamics*. Two topics I am highly interested in.
 
@@ -23,7 +26,9 @@ This blog post will aim at presenting some of the talks I really enjoyed watchin
 
   I really recommend watching the talk as on top of the interesting work, Matt Hoffman is an amazing speaker!
 
-- ### 2. [All in the (Exponential) Family: Information Geometry and Thermodynamic Variational Inference](https://icml.cc/virtual/2020/poster/6234) [Rob Brekelmans](https://icml.cc/virtual/2020/papers?filter=authors&search=Rob Brekelmans), [Vaden Masrani](https://icml.cc/virtual/2020/papers?filter=authors&search=Vaden Masrani), [Frank Wood](https://icml.cc/virtual/2020/papers?filter=authors&search=Frank Wood), [Greg Ver Steeg](https://icml.cc/virtual/2020/papers?filter=authors&search=Greg Ver Steeg), [Aram Galstyan](https://icml.cc/virtual/2020/papers?filter=authors&search=Aram Galstyan), [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/2826-Paper.pdf)
+- ### 2. [All in the (Exponential) Family: Information Geometry and Thermodynamic Variational Inference](https://icml.cc/virtual/2020/poster/6234) Rob Brekelmans, Vaden Masrani, Frank Wood, Greg Ver Steeg, Aram Galstyan [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/2826-Paper.pdf)
+
+  ![](/assets/icml20/tvo.png)
 
   This paper is based on the [Thermodynamic Variational Objective paper](https://arxiv.org/abs/1907.00031) which have yet to read! But the general idea it that we replace the ELBO by a series of "tempered" ELBO, where the variational distribution is a mixture between a variational family $q_\phi$ and the joint distribution $p(z,x)$.
 
@@ -41,9 +46,11 @@ This blog post will aim at presenting some of the talks I really enjoyed watchin
 
   From the discussions one of the pit-falls of the methods seems to be the dimensionality of the problem. The expectations computed require importance sampling, which is known to be weak in high-dimensions.
 
-- ### 3. [Involutive MCMC: One Way to Derive Them All](https://icml.cc/virtual/2020/poster/6476) [[paper\]](https://proceedings.icml.cc/static/paper_files/icml/2020/4339-Paper.pdf) [Kirill Neklyudov](https://icml.cc/virtual/2020/papers?filter=authors&search=Kirill Neklyudov), [Max Welling](https://icml.cc/virtual/2020/papers?filter=authors&search=Max Welling), [Evgenii Egorov](https://icml.cc/virtual/2020/papers?filter=authors&search=Evgenii Egorov), [Dmitry Vetrov](https://icml.cc/virtual/2020/papers?filter=authors&search=Dmitry Vetrov),
+- ### 3. [Involutive MCMC: One Way to Derive Them All](https://icml.cc/virtual/2020/poster/6476) Kirill Neklyudov, Max Welling, Evgenii Egorov, Dmitry Vetrov, [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/4339-Paper.pdf) 
 
-  Generalization papers are always interesting because they bring a higher level of what some algorithms do. In this talk they aim at bringing a lot of **Markov Chain Monte Carlo** (MCMC) algorithms under one hood. :eye:
+  ![](/assets/icml20/iMCMC.png)
+
+  Generalization papers are always interesting because they bring a higher level of what some algorithms do. In this talk they aim at bringing a lot of **Markov Chain Monte Carlo** (MCMC) algorithms [under one hood](https://vignette.wikia.nocookie.net/lotrfanon/images/b/b8/7bcdf0cf3d97a4467f082850758c527d.jpg/revision/latest/scale-to-width-down/220?cb=20181224143216).
 
   The basic idea of MCMC is to sample from a distribution by moving in the variable domain. Every move is subject to a rejection step, based on probability of the sample and the probability of the move. The samples collected will then be assumed to come from the target distribution. More formally the chain is
 
@@ -64,14 +71,14 @@ This blog post will aim at presenting some of the talks I really enjoyed watchin
   The **involution** restriction is now relaxed to $f(x, v) = f^{-1}(x, v)$ . If we take the Metropolis Hasting algorithm this would be sample $v~p(v|x)$ our proposal. For example for the random walk algorithm, this would mean sampling from a Gaussian centered in $x$ . Then $f(x, v) = [v,x]$ (notice the permutation). The acceptance rate gives then $P = \min \left\{ 1, \frac{p(v,x)}{p(x,v)}\right\}$
 
   Following this definition, they list a series of tricks including additional auxiliary augmentations, additional involutions and deterministic map.
-
+  
   This talk really fascinated me as it really gives openings to create new and more efficient sampling algorithms!
 
 ## Other talks
 
 Here are other presentations that really caught my attention and that I will probably explore later
 
-- [Scalable Exact Inference in Multi-Output Gaussian Processes](https://icml.cc/virtual/2020/poster/6430) [Wessel Bruinsma](https://icml.cc/virtual/2020/papers?filter=authors&search=Wessel Bruinsma), [Eric Perim Martins](https://icml.cc/virtual/2020/papers?filter=authors&search=Eric Perim Martins), [William Tebbutt](https://icml.cc/virtual/2020/papers?filter=authors&search=William Tebbutt), [Scott Hosking](https://icml.cc/virtual/2020/papers?filter=authors&search=Scott Hosking), [Arno Solin](https://icml.cc/virtual/2020/papers?filter=authors&search=Arno Solin), [Richard E Turner](https://icml.cc/virtual/2020/papers?filter=authors&search=Richard Turner),[[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/4027-Paper.pdf)
+- [Scalable Exact Inference in Multi-Output Gaussian Processes](https://icml.cc/virtual/2020/poster/6430) Wessel Bruinsma, Eric Perim Martins, William Tebbutt, Scott Hosking, Arno Solin, Richard E Turner [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/4027-Paper.pdf)
 
   General framework for multi-output GPs with a smart projection to reduce the complexity of the problem. It looks very sound  theoretically 
 
@@ -79,33 +86,37 @@ Here are other presentations that really caught my attention and that I will pro
 
   Augmenting the data with an additional parameter (same for all data) and then projecting the data on an hypersphere to use spherical harmonics as inducing points
 
-- [Efficiently sampling functions from Gaussian process posteriors](https://icml.cc/virtual/2020/poster/6461) [James Wilson](https://icml.cc/virtual/2020/papers?filter=authors&search=James Wilson), [Slava Borovitskiy](https://icml.cc/virtual/2020/papers?filter=authors&search=Viacheslav Borovitskiy), [Alexander Terenin](https://icml.cc/virtual/2020/papers?filter=authors&search=Alexander Terenin), [Peter Mostowsky](https://icml.cc/virtual/2020/papers?filter=authors&search=Peter Mostowsky), [Marc Deisenroth](https://icml.cc/virtual/2020/papers?filter=authors&search=Marc Deisenroth), [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/4232-Paper.pdf) 
+- [Efficiently sampling functions from Gaussian process posteriors](https://icml.cc/virtual/2020/poster/6461) James Wilson, Slava Borovitskiy, Alexander Terenin, Peter Mostowsky, Marc Deisenroth [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/4232-Paper.pdf) 
 
   By separating the contribution of the prior and the data, one can sample more efficiently (linear time!) by using random fourier features for the prior.
 
-- [Automatic Reparameterisation of Probabilistic Programs](https://icml.cc/virtual/2020/poster/5804) [Maria Gorinova](https://icml.cc/virtual/2020/papers?filter=authors&search=Maria Gorinova), [Dave Moore](https://icml.cc/virtual/2020/papers?filter=authors&search=Dave Moore), [Matt Hoffman](https://icml.cc/virtual/2020/papers?filter=authors&search=Matthew Hoffman),[[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/271-Paper.pdf) 
+- [Automatic Reparameterisation of Probabilistic Programs](https://icml.cc/virtual/2020/poster/5804) Maria Gorinova, Dave Moore, Matt Hoffman [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/271-Paper.pdf) 
 
   By creating an interpolation between the centered version and non-centered version of a graphical model one can find the optimal representation for sampling/inference.
 
-- [Stochastic Differential Equations with Variational Wishart  Diffusions](https://icml.cc/virtual/2020/poster/6149) [Martin Jørgensen](https://icml.cc/virtual/2020/papers?filter=authors&search=Martin Jørgensen), [Marc Deisenroth](https://icml.cc/virtual/2020/papers?filter=authors&search=Marc Deisenroth), [Hugh Salimbeni](https://icml.cc/virtual/2020/papers?filter=authors&search=Hugh Salimbeni),[[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf) 
+- [Stochastic Differential Equations with Variational Wishart  Diffusions](https://icml.cc/virtual/2020/poster/6149) Martin Jørgensen, Marc Deisenroth, Hugh Salimbeni [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf) 
 
   When one wants to represent noise with a non-stationary full covariance depending on time a Wishart process helps to determine it. The technique use GPs for the cholesky parameters and present a low-rank approximation for efficiency
 
-- [Stochastic Gradient and Langevin Processes](https://icml.cc/virtual/2020/poster/5923) [Xiang Cheng](https://icml.cc/virtual/2020/papers?filter=authors&search=Xiang Cheng), [Dong Yin](https://icml.cc/virtual/2020/papers?filter=authors&search=Dong Yin), [Peter Bartlett](https://icml.cc/virtual/2020/papers?filter=authors&search=Peter Bartlett), [Michael Jordan](https://icml.cc/virtual/2020/papers?filter=authors&search=Michael Jordan) [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf) 
+- [Stochastic Gradient and Langevin Processes](https://icml.cc/virtual/2020/poster/5923) Xiang Cheng, Dong Yin, Peter Bartlett, Michael Jordan [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1074-Paper.pdf) 
 
   Show equivalence between Stochastic Gradient Descent (SGD) and Langeving processes (them again!)
 
-- [Variance Reduction and Quasi-Newton for Particle-Based Variational Inference](https://icml.cc/virtual/2020/poster/6650) [Michael Zhu](https://icml.cc/virtual/2020/papers?filter=authors&search=Michael Zhu), [Chang Liu](https://icml.cc/virtual/2020/papers?filter=authors&search=Chang Liu), [Jun Zhu](https://icml.cc/virtual/2020/papers?filter=authors&search=Jun Zhu), [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5434-Paper.pdf) 
+- [Variance Reduction and Quasi-Newton for Particle-Based Variational Inference](https://icml.cc/virtual/2020/poster/6650) Michael Zhu, Chang Liu, Jun Zhu [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5434-Paper.pdf) 
 
   Preconditioners for optimization are not straight forward in the particle-based optimization framework. This work aims at solving that
 
-- [Learning the Stein Discrepancy for Training and Evaluating Energy-Based Models without Sampling](https://icml.cc/virtual/2020/poster/6649) [Will Grathwohl](https://icml.cc/virtual/2020/papers?filter=authors&search=Will Grathwohl), [Kuan-Chieh Wang](https://icml.cc/virtual/2020/papers?filter=authors&search=Kuan-Chieh Wang), [Jörn Jacobsen](https://icml.cc/virtual/2020/papers?filter=authors&search=Joern-Henrik Jacobsen), [David Duvenaud](https://icml.cc/virtual/2020/papers?filter=authors&search=David Duvenaud), [Richard Zemel](https://icml.cc/virtual/2020/papers?filter=authors&search=Richard Zemel), [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5430-Paper.pdf)
+- [Learning the Stein Discrepancy for Training and Evaluating Energy-Based Models without Sampling](https://icml.cc/virtual/2020/poster/6649) Will Grathwohl, Kuan-Chieh Wang, Jörn Jacobsen, David Duvenaud, Richard Zemel  [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/5430-Paper.pdf)
 
   Stein Discrepancy is complicated to use, and the kernelized versions has a lot of flaws, instead they propose to learn a constrained neural net to replace the kernel and obtain better results
 
-- [Non-convex Learning via Replica Exchange Stochastic Gradient MCMC](https://icml.cc/virtual/2020/poster/6023) [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1632-Paper.pdf) :star::star::star::star:
+- [Non-convex Learning via Replica Exchange Stochastic Gradient MCMC](https://icml.cc/virtual/2020/poster/6023) Wei Deng, Qi Feng, Liyao Gao, Faming Liang, Guang Lin [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/1632-Paper.pdf)
 
-- [Handling the Positive-Definite Constraint in the Bayesian Learning Rule](https://icml.cc/virtual/2020/poster/6821) [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/6575-Paper.pdf) :star::star::star::star:
+  One runs two processes with very different stepsize, there is then a chance for the sampler to switch between the two chains, allowing for a compromise between exploration and exploitation.
+
+- [Handling the Positive-Definite Constraint in the Bayesian Learning Rule](https://icml.cc/virtual/2020/poster/6821) Wu Lin, Mark Schmidt, Emti Khan [[paper]](https://proceedings.icml.cc/static/paper_files/icml/2020/6575-Paper.pdf) 
+
+  In order to optimize a positive-definite matrix, they propose to add a corrective term (through information geometry) to ensure the PD constraint is kept.
 
 ## The online format
 

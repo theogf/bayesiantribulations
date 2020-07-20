@@ -6,5 +6,7 @@
     {{ if hascode }}
         {{ insert foot_highlight.html }}
     {{ end }}
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+        {% include /_includes/comments.html element=".post-content" github_account="theogf/bayesiantribulations" require_cookie_consent="true" %}
   </body>
 </html>
