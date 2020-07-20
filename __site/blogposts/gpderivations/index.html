@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="/libs/katex/katex.min.css">
      
-  
+   <link rel="stylesheet" href="/libs/highlight/github.min.css">
+   
   <link rel="stylesheet" href="/css/franklin.css">
   <link rel="stylesheet" href="/css/poole_hyde.css">
   <!-- style adjustments -->
@@ -20,7 +21,7 @@
     }
   </style>
   <link rel="icon" href="/assets/favicon.png">
-   <title></title>  
+   <title>Gaussian Process Important derivations</title>  
 </head>
 <body>
 <div class="sidebar">
@@ -39,17 +40,79 @@
 </div>
 <div class="content container">
 <!-- Content appended here -->
-
-<div class="franklin-content">
-
-<div class="page-foot">
+<div class="franklin-content"><h1 id="gaussian_process_important_derivations"><a href="#gaussian_process_important_derivations">Gaussian Process important derivations</a></h1>
+<div class="franklin-toc"><ol><li><a href="#gaussian_process_important_derivations">Gaussian Process important derivations</a><ol><li><ol><li><a href="#derivatives_kl_divergence_given_variational_parameters">Derivatives KL Divergence given variational parameters</a><ol><li><a href="#gradients">Gradients</a></li><li><a href="#hessians">Hessians</a></li></ol></li></ol></li></ol></li></ol></div> </p>
+\[
+	\text{KL}(q||p) = \frac{1}{2}\left[\log|K| - \log|\Sigma| - d + \text{tr} (K^{-1}\Sigma) + (\mu_0 - \mu)^T K^{-1}(\mu_0 - \mu)\right].
+\]
+<pre><code class="language-julia">using KernelFunctions, LinearAlgebra, ForwardDiff, Plots, LaTeXStrings
+D = 3
+μ = randn(D)
+μ₀ = randn(D)
+Σ = rand(D, D) |> x->x*x' # Positive definite matrix
+K = rand(D, D) |> x->x*x'
+L = cholesky(Σ).L
+KL(μ, Σ::Matrix, μ₀ ,K) =
+	0.5*(logdet(K) - logdet(Σ) - length(μ) +
+		tr(inv(K) * Σ) + (μ₀ - μ)' * inv(K) * (μ₀ - μ))
+@show KL(μ,Σ,μ₀,K)</code></pre>
+<pre><code class="plaintext">KL(μ, Σ, μ₀, K) = 2305.724075318417
+</code></pre>
+<p>When using instead \(L\) where \(LL^\top = \Sigma\). \[\begin{aligned}
+\text{KL}(q||p) = \frac{1}{2}\left[\log|K| - 2 \log|L| - d + \text{tr} (L^\top K^{-1}L) + (\mu_0 - \mu)^T K^{-1}(\mu_0 - \mu)\right].
+\end{aligned}\]
+<pre><code class="language-julia">L = cholesky(Σ).L
+KL(μ, L::LowerTriangular, μ₀, K) =
+ 	0.5*(logdet(K) - 2logdet(L) - length(μ) +
+			tr(L' * inv(K) * L) + (μ₀ - μ)' * inv(K) * (μ₀-μ))
+@show KL(μ,L,μ₀,K)</code></pre> <pre><code class="plaintext">KL(μ, L, μ₀, K) = 2305.724075318417
+</code></pre>
+<h3 id="derivatives_kl_divergence_given_variational_parameters"><a href="#derivatives_kl_divergence_given_variational_parameters">Derivatives KL Divergence given variational parameters</a></h3>  <h4 id="gradients"><a href="#gradients">Gradients</a></h4>  Gradients given \(\mu,\Sigma,L\): \[\begin{aligned}
+\frac{d\text{KL}}{d\mu} =& K^{-1}(\mu-\mu_0)\\
+\frac{d\text{KL}}{d\Sigma} =& \frac{1}{2}\left(-\Sigma^{-1} + K^{-1}\right)\\
+\frac{d\text{KL}}{dL} =& \frac{1}{2}\left(-2\text{diag}(L)^{-1} + 2K^{-1}L\right)
+\end{aligned}\] <pre><code class="language-julia">dKL_dμ(K, μ, μ₀) = inv(K) * (μ - μ₀) # Analytic Formulation
+analytic = dKL_dμ(K, μ, μ₀)
+autodiff = ForwardDiff.gradient(μ) do x
+	KL(x, Σ, μ₀, K)
+end</code></pre>  <img src="/assets/blogposts/gpderivations/code/output/dKLdmu.svg" alt="">
+<pre><code class="language-julia">dKL_dΣ(K, Σ) = 0.5 * (-inv(Σ) + inv(K))
+analytic = dKL_dΣ(K, Σ)
+autodiff = ForwardDiff.gradient(Σ) do x
+	KL(μ, x, μ₀, K)
+end</code></pre> <img src="/assets/blogposts/gpderivations/code/output/dKLdSigma.svg" alt="">
+<pre><code class="language-julia">dKL_dL(K, L) =
+	LowerTriangular(0.5 * (-2 * inv(Diagonal(Matrix(L))) + 2 * inv(K) * L))
+analytic = dKL_dL(K, L)
+autodiff = ForwardDiff.gradient(L) do x
+	KL(μ, x, μ₀, K)
+end</code></pre> <img src="/assets/blogposts/gpderivations/code/output/dKLdL.svg" alt="">
+<h4 id="hessians"><a href="#hessians">Hessians</a></h4>  Hessian given \(\mu,\Sigma,L\): \[\begin{aligned}
+\frac{d^2KL}{d\mu\mu} =& K^{-1}\\
+\frac{d^2KL}{d\mu d\Sigma} =& 0\\
+\frac{d^2KL}{d\Sigma\Sigma} =& \frac{1}{2} \Sigma^{-1}\otimes \Sigma^{-1}\\
+\frac{d^2KL}{d\mu dL} =& 0\\
+\frac{d^2KL}{dLL} =& - \text{diag} L^{-1}\otimes L^{-1} + K\otimes I
+\end{aligned}\] Where \(\otimes\) is the outer-product<br/>
+<pre><code class="language-julia">d2KL_dμμ(K) = inv(K)
+analytic = d2KL_dμμ(K)
+autodiff = ForwardDiff.hessian(μ) do x
+	KL(x, Σ, μ₀, K)
+end
+plot(heatmap(analytic,title="Analytic"),
+		heatmap(autodiff,title="AutoDiff"),
+		heatmap(analytic-autodiff,title="Difference"),</code></pre> <img src="/assets/blogposts/gpderivations/code/output/d2KLdmumu.svg" alt="">
+<pre><code class="language-julia">d2KL_dSS(Σ) = 0.5 * kron(inv(Σ), inv(Σ))
+analytic = d2KL_dSS(Σ)
+autodiff = ForwardDiff.hessian(Σ) do x
+	KL(μ, x, μ₀, K)
+end</code></pre>
+<img src="/assets/blogposts/gpderivations/code/output/d2KLdSigmaSigma.svg" alt=""><div class="page-foot">
   <div class="copyright">
-    &copy; Theo Galy-Fajou. Last modified: March 10, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
+    &copy; Theo Galy-Fajou. Last modified: July 20, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a>.
   </div>
 </div>
-
-</div>
-<!-- CONTENT ENDS HERE -->
+</div><!-- CONTENT ENDS HERE -->
     </div>  <!-- div: content container -->
     
         <script src="/libs/katex/katex.min.js"></script>
@@ -57,6 +120,10 @@
 <script>renderMathInElement(document.body)</script>
 
     
+    
+        <script src="/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
     
   </body>
 </html>
