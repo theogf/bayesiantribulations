@@ -7,8 +7,10 @@ The website_* must be defined for the RSS to work
 @def website_descr = "Tribulations in a Bayesian life"
 @def website_url   = "https://theogf.github.io/bayesiantribulations/"
 @def prepath = "bayesiantribulations"
-
+@def github_account = "theogf/bayesiantribulations"
+@def require_cookie_consent = true
 @def author = "Theo Galy-Fajou"
+@def comment_section = false
 
 <!-- @def mintoclevel = 2 -->
 <!--

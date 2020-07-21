@@ -6,7 +6,17 @@
     {{ if hascode }}
         {{ insert foot_highlight.html }}
     {{ end }}
+
     <script src="/libs/jquery/dist/jquery.min.js"></script>
-        {% include /_includes/comments.html element=".post-content" github_account="theogf/bayesiantribulations" require_cookie_consent="true" %}
+    {{ if comment_section }}
+        <script src="https://utteranc.es/client.js"
+            repo="theogf/bayesiantribulations"
+            issue-term="title"
+            label="[Comments]"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    {{ end }}
   </body>
 </html>
