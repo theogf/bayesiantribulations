@@ -2,7 +2,7 @@
 @def hascode = false
 @def hasmath = false
 
-# Inaccurate blog posts
+# (Inaccurate) blog posts
 
 ## Mathematical Notes
 

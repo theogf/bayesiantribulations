@@ -7,4 +7,9 @@ where appropriate -->
 
 # Bayesian Tribulations
 
-\tableofcontents <!-- you can use \toc as well -->
+Welcome to my blog about everything from insidious derivations and their empirical checks to conference experiences.
+
+You can find all the posts in [Blog Posts](blogposts), a (short for now) summary of my work in [Publications](publications).
+
+For smaller news checkout my [front page](https://theogf.github.io/) and to see more about code, you should probably check my [Github page](https://github.com/theogf).
+
