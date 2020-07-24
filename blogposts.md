@@ -2,5 +2,12 @@
 @def hascode = false
 @def hasmath = false
 
-- [Gaussian Process Derivations](./gpderivations)
-- [ICML 2020](./icml20)
+# Inaccurate blog posts
+
+## Mathematical Notes
+
+- [Gaussian Process Derivations](./gpderivations) (Updated 24/07)
+
+## Research Notes
+
+- [ICML 2020](./icml20) (Updated 24/07)
