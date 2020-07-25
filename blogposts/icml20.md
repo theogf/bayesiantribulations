@@ -1,7 +1,6 @@
 @def title = "ICML 2020"
 @def hasmath = true
 @def hascode = false
-@def comment_issue_id = 1
 @def comment_section = true
 
 
