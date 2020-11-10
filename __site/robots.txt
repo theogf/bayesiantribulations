@@ -1,0 +1,4 @@
+Sitemap: https://theogf.github.io/bayesiantribulations/sitemap.xml
+
+User-agent: *
+Disallow:
