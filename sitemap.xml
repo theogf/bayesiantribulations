@@ -14,6 +14,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://theogf.github.io/bayesiantribulations/blogposts/gpderivations/index.html</loc>
+    <lastmod>2020-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://theogf.github.io/bayesiantribulations/blogposts/thermint/index.html</loc>
     <lastmod>2020-11-10</lastmod>
     <changefreq>monthly</changefreq>
