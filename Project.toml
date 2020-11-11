@@ -1,4 +1,5 @@
 [deps]
+Formatting = "59287772-0a20-5a39-b81b-1366585eb4c0"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 KernelFunctions = "ec8451be-7e33-11e9-00cf-bbf324bd1392"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"

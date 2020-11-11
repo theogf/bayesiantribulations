@@ -1,5 +1,8 @@
 <!-- CONTENT ENDS HERE -->
     </div>  <!-- div: content container -->
+    {{ if blog_post }}
+        {{ insert blog_post.html}}
+    {{ end }}
     {{ if hasmath }}
         {{ insert foot_katex.html }}
     {{ end }}

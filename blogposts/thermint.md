@@ -1,63 +1,91 @@
-
-
 @def title = "Thermodynamic Integration"
 @def hasmath = true
 @def comment_section = true
+@def blog_post = true
 @def hacode = true
 
 # Thermodynamic Integration
 
-**Thermodynamic Integration (TI)** is a method coming straight from statistical physics to compute the difference of free energy between two systems $A$ and $B$. We are going to go from this physics definition and see how we can apply it to Bayesian Inference.
+**Thermodynamic Integration (TI)** is a method coming straight from statistical physics.
+There, it is used to compute the difference of free energy between two systems $A$ and $B$.
+This sounds very abstract but we are going to go from the physics explanation to a direct application in Bayesian Inference.
 
-We start with a system with a potential energy function $U(x)$ with associated probability function
+## The physics approach
 
-$$p(x) = \frac{1}{Z}\exp\left(-\frac{U(x)}{k_BT}\right)$$
+Let's first define a system state by $x$.
+We then define a potential energy function $U(x)$ which defines what we work with.
+For example, if you had a spring (without gravity, friction, etc), $x$ would be the distance from the rest position and the potential energy would be $\half k x^2$ (where $k$ is the spring constant).
 
-Where $Z$  is the partition function of this system defined as
+Now we could be interested on what is the probability to find the spring in a certain state!
+This can be done by using the following density distribution:
 
-$$Z = \int_\Omega \exp\left(-\frac{U(x)}{k_BT}\right)dx$$
+$$p(x) = \frac{1}{Z}\exp\left(-U(x)\right)$$
 
-where $\Omega$ is the domain of all the states of the system and $x$ is one state of this system. The definition of the free energy is given by
+Where $Z$ is the partition function of this system defined as
 
-$$F = -k_BT\log(Z)$$
+$$Z = \int_\Omega \exp\left(-U(x)\right)dx$$
 
-Now going back to our systems $A$ and $B$ with potential energy $U_A$ and $U_B$ . We can construct a new system built as a linear interpolation between the two systems : ${U_\lambda = U_A + \lambda(U_B - U_A)}$
+where $\Omega$ is the domain of all the possible states of the system.
+With a quick computation we can see that the highest probability is when $x=0$ and that this probability decreases when $x$ goes away from its rest position.
 
-We can show that
+The free energy is a complex concept which belongs mostly in thermodynamics and has little meaning in our example.
+However it is here defined as :
 
-$$F_B - F_A = \int_0^1 E_{U(\lambda)}\left[U_B - U_A\right]d\lambda$$
+$$F = -\log(Z)$$
 
+Imagine now that we want to change the value $k$ of our spring.
+We would have a spring with $k_A$ and a spring with $k_B$, this would give us two different potential energy function $U_A$ and $U_B$.
+We can imagine that we control the variable $k$ and create an interpolation between the two creating a third intermediate system :
+
+$$U_\lambda = U_A + \lambda(U_B - U_A)$$
+
+Note that $U_0 = U_A$ and $U_1 = U_B$.
+
+Now the most important result is that we can prove that :
+
+$$F_B - F_A = \int_0^1 \expec{p_\lambda(x)}{U_B(x) - U_A(x)}d\lambda,$$
+
+where $p_\lambda$ is defined by the potential energy $U_\lambda$.
+~~~
 <details>
     <summary> Proof :</summary>
-    $$\int_0^1 \frac{\partial F(\lambda)}{\partial \lambda}d\lambda = \int_0^1 \frac{\partial \log(Z(\lambda)}{\partial \lambda}d\lambda = $$
+~~~
+    \begin{align}
+    F_B - F_A =& F(1) - F(0) = \int_0^1 \frac{\partial F(\lambda)}{\partial \lambda}d\lambda\\
+    \int_0^1 \frac{\partial F(\lambda)}{\partial \lambda}d\lambda &= -\int_0^1 \frac{\partial \log Z_\lambda}{\partial \lambda}d\lambda = -\int_0^1 \frac{1}{Z_\lambda}\frac{\partial Z_\lambda}{\partial \lambda}d\lambda \\
+    &=\int_0^1 \int_\Omega \frac{\exp(-U_\lambda(x))}{Z_\lambda}\frac{\partial U_\lambda(x)}{\partial \lambda}dxd\lambda\\
+    &=\int_0^1 \expec{p_\lambda(x)}{\frac{dU_\lambda(x)}{d\lambda}}d\lambda = \int_0^1 \expec{p(x)}{U_B(x) - U_A(x)}d\lambda
+    \end{align}
+~~~
 </details>
+~~~
 
-
-
-\begin{align}
-F_B - F_A =& F(1) - F(0) = \int_0^1 \frac{\partial F(\lambda)}{\partial \lambda}d\lambda\\
-\int_0^1 \frac{\partial F(\lambda)}{\partial \lambda}d\lambda &= -\int_0^1 \frac{\partial \log Z_\lambda}{\partial \lambda}d\lambda = -\int_0^1 \frac{1}{Z_\lambda}\frac{\partial Z_\lambda}{\partial \lambda}d\lambda \\
-&=\int_0^1 \int_\Omega \frac{\exp(-U_\lambda(x))}{Z_\lambda}\frac{\partial U_\lambda(x)}{\partial \lambda}dxd\lambda\\
-&=\int_0^1 E_{p_\lambda(x)}\left[\frac{dU\lambda(x)}{d\lambda}\right]d\lambda = \int_0^1 E_{p(x)}\left[U_B(x) - U_A(x)\right]d\lambda
-\end{align}
-
-
-
+What this result tell us is that we can compute the difference of free energy by computing the expectation of the difference of potentials when moving the system from one to another!
 It is all very nice, but very abstract if you are not a physicist! What does it have to do with Bayesian inference?
 
-The Bayes theorem states that the posterior
 
-$p(x|y) = \frac{p(x,y)}{p(y)}$ ,
+## Using it in Bayesian Inference
 
-where $x$ is my hypothesis or the parameters of my model, and $y$ is my observed data! We can actually rewrite as an energy model, as earlier!
+Let's start with the basics: I have $x$, some hypothesis or parameters of my model, and $y$, some observed data! 
+The **Bayes theorem** states that the posterior is defined as:
+
+$$p(x|y) = \frac{p(x,y)}{p(y)} = \frac{p(y|x)p(x)}{p(y)},$$
+
+where $p(y|x)$ is the likelihood and $p(x)$ is the prior, we call $p(x,y)$ the joint.
+
+We can rewrite it as an energy model, just as earlier!
 
 $$p(x|y) = \frac{1}{Z}\exp\left(-U(x,y)\right)$$
 
-where the potential energy $U(x,y) = -\log(p(x,y))$ is the negative log joint and the partition function $Z=\int_\Omega \exp(-U(x,y))dx$ is the evidence. We have furthermore the connection that the free energy is nothing else than the log evidence.
+where the potential energy $U(x,y) = -\log(p(x,y))$ is the negative log joint and the partition function $Z=\int_\Omega \exp(-U(x,y))dx$ is the evidence.
+We have furthermore the connection that the free energy is nothing else than the log evidence.
 
-Now we have a direct connection between energy models and Bayesian problems! Which leads us to the use of TI for Bayesian inference:
+Now we have a direct connection between energy models and Bayesian problems! 
+Which leads us to the use of TI for Bayesian inference:
 
-The most difficult part of the Bayes theorem comes from the fact that except for simple cases, the posterior $p(x|y)$ is intractable. Most of the time the joint distribution $p(x,y)$ is known in closed form, the real issue is then to estimate the evidence $p(y)$, which is exactly what TI aims at.
+The most difficult part of the Bayes theorem comes from the fact tha, except for simple cases, the posterior $p(x|y)$ is intractable.
+Most of the time the joint distribution $p(x,y)$ is known in closed form.
+The real issue is to estimate the evidence $p(y)$, which is exactly what TI aims at!
 
 The two systems we are going to consider is the prior : $U_A(x) = -\log p(x)$ and the joint distribution $U_B(x) = -\log p(x,y) = -\log p(y|x) - \log p(x)$. Now our intermediate state is given by
 
@@ -67,49 +95,59 @@ The normalized density derived from this potential energy is called a **power po
 
 $$p_\lambda(x|y) = \frac{p(y|x)^\lambda p(y)}{Z_\lambda}$$
 
-which just a posterior for which we reduced the importance of the likelihood.
+which is just a posterior for which we reduced the importance of the likelihood.
 
-Ok so performing the thermodynamic integration we derived earlier gives us :
+Ok! So performing the thermodynamic integration we derived earlier gives us :
 
-$$ \log\int p(x,y)dx - \log \underbrace{\int p(x) dx}_{=1} = \log p(y) = \int_0^1 E_{p_\lambda(x)}[\log p(y|x)]d\lambda$$
+$$ F_B - F_A = \log\int p(x,y)dx - \log \underbrace{\int p(x) dx}_{=1} = \log p(y) = \int_0^1 E_{p_\lambda(x)}[\log p(y|x)]d\lambda$$
 
-Now let's put this to practice for a very simple use case a Gaussian prior with a Gaussian likelihood
+Now let's put this to practice for a very simple use case of a Gaussian prior with a Gaussian likelihood
 
 \begin{align}
-p(x) = \mathcal{N}(x|10, 1)
-p(y|x) = \mathcal{N}(y|x, 1)
+p(x) = \mathcal{N}(x|\mu_p=10, \sigma_p=1)
+p(y|x) = \mathcal{N}(y|x, \sigma_l=1)
 \end{align}
 
 We take $y = -10$ to make a clear difference between $U_A$ and $U_B$
 
 Of course the posterior can be found analytically but this will help us to evaluate different approaches.
 ```julia:./code/thermint
-using Plots, Distributions, LaTeXStrings; pyplot(); default(lw = 2.0, legendfontsize = 15.0, labelfontsize = 15.0)
-σ_prior = 1.0; σ_likelihood = 1.0
-μ_prior = 10.0
-prior = Normal(μ_prior, σ_prior)
-likelihood(x) = Normal(x, σ_likelihood)
+using Plots, Distributions, LaTeXStrings; pyplot()
+default(lw = 2.0, legendfontsize = 15.0, labelfontsize = 15.0)
+σ_p = 1.0 # Define your standard deviation for the prior
+σ_l = 1.0 # Define your standard deviation for the likelihood
+μ_p = 10.0 # define the mean of your prior
+prior = Normal(μ_p, σ_p) # prior distribution
+likelihood(x) = Normal(x, σ_l) # function returning a distribution given x
 y = -10.0
-p_prior(x) = pdf(prior, x)
-p_likelihood(x, y) = pdf(likelihood(x), y)
+p_prior(x) = pdf(prior, x) # Our prior density function
+p_likelihood(x, y) = pdf(likelihood(x), y) # Our likelihood density function
 ```
 \output{./code/thermint}
 
 Now we have all the parameters in place we can define the exact posterior and power posterior:
+\begin{align}
+p_\lambda(x|y) = \mathcal{N}(σ\lambda * \frac{\lambda y}{\sigma_l^2} + \frac{\mu_p}{\sigma_p^2}, \sigma_\lambda)
+\sigma_\lambda = \left(\frac{1}{\sigma_p^2} + \frac{\lambda}{\sigma_l^2}\right)
+\end{align}
 
 ```julia:./code/thermint
-σ_posterior(λ) = sqrt(inv(1/σ_prior^2 + λ / σ_likelihood^2))
-μ_posterior(y, λ) = σ_posterior(λ) * (λ * y / σ_likelihood^2 + μ_prior / σ_prior^2)
+σ_posterior(λ) = sqrt(inv(1/σ_p^2 + λ / σ_l^2))
+μ_posterior(y, λ) = σ_posterior(λ) * (λ * y / σ_l^2 + μ_p / σ_p^2)
 posterior(y) = Normal(μ_posterior(y, 1.0), σ_posterior(1.0))
 p_posterior(x, y) = pdf(posterior(y), x)
 power_posterior(y, λ) = Normal(μ_posterior(y, λ), σ_posterior(λ))
 p_pow_posterior(x, y, λ) = pdf(power_posterior(y, λ), x)
-xgrid = range(-10, 10, length = 400)
-plot(xgrid, p_prior, label = "Prior", xlabel = "x")
+xgrid = range(-15, 15, length = 400)
+plot(xgrid, p_prior , label = "Prior", xlabel = "x")
 plot!(xgrid, x->p_likelihood(x, y),label =  "Likelihood")
 plot!(xgrid, x->p_posterior(x, y), label = "Posterior")
 savefig(joinpath(@OUTPUT, "distributions.svg")) # hide
-plot(xgrid, [x->p_pow_posterior(x, y, λ) for λ in 0:0.2:1], label = reshape(["λ = $λ" for λ in 0:0.2:1], 1, :), title = "Power Posteriors", xlabel = "x", ylabel = L"p_\lambda(x|y)") # hide
+plot(xgrid, [x->p_pow_posterior(x, y, λ) for λ in 0:0.2:1], # hide
+    label = reshape(["λ = $λ" for λ in 0:0.2:1], 1, :), # hide
+    title = "Power Posteriors", # hide
+    xlabel = "x", # hide
+    ylabel = L"p_\lambda(x|y)") # hide
 savefig(joinpath(@OUTPUT, "power_posteriors.svg")) # hide
 ```
 
@@ -130,11 +168,11 @@ savefig(joinpath(@OUTPUT, "energies.svg")) # hide
 \output{./code/thermint}
 \fig{./code/output/energies.svg}
 
-Now we can start evaluating the integrand for multiple $\lambda$ :
+Now we can start evaluating the integrand for multiple $\lambda$.
+It is standard practice to use an irregular grid with step size $\epsilon_i = \left(\frac{i}{N}\right)^5$
 
 ```julia:./code/thermint
 M = 100
-λs = range(0, 1, length= M)
 λs = ((1:M)./M).^5
 expec_λ = zeros(length(λs))
 T = 1000
@@ -151,11 +189,12 @@ savefig(joinpath(@OUTPUT, "expec_log.svg")) # hide
 And we can now compare the sum with the actual value of $Z$ :
 
 ```julia:./code/thermint
-using Trapz
+using Trapz, Formatting
 logpy = logpdf(posterior(y), y)
+s_logpy = fmt(".2f", logpy)
 TI_logpy = [trapz(λs[1:i], expec_λ[1:i]) for i in 1:length(λs)]
 plot(λs, TI_logpy, label = "Therm. Int.", xlabel = L"\lambda") # hide
-hline!([logpy], label = latexstring("\\log (p(y)) = ", logpy)) # hide
+hline!([logpy], label = latexstring("\\log (p(y)) = ", s_logpy)) # hide
 savefig(joinpath(@OUTPUT, "thermint.svg")) # hide
 ```
 \output{./code/thermint}
@@ -173,7 +212,7 @@ T = 10000
 xs = rand(prior, T)
 prior_logpy = [log(mean(pdf.(likelihood.(xs[1:i]), y))) for i in 1:T]
 plot(1:T, prior_logpy, label = "Prior MC Integration", xlabel = "T") # hide
-hline!([logpy], label = latexstring("\\log (p(y)) = ", logpy)) # hide
+hline!([logpy], label = latexstring("\\log (p(y)) = ", s_logpy)) # hide
 savefig(joinpath(@OUTPUT, "prior_integration.svg")) # hide
 ```
 
@@ -199,8 +238,20 @@ T = 10000
 xs = rand(posterior(y), T)
 posterior_logpy = [-log(mean(inv.(pdf.(likelihood.(xs[1:i]), y)))) for i in 1:T]
 plot(1:T, posterior_logpy, label = "Posterior MC Integration", xlabel = "T") # hide
-hline!([logpy], label = latexstring("\\log (p(y)) = ", logpy)) # hide
+hline!([logpy], label = latexstring("\\log (p(y)) = ", s_logpy)) # hide
 savefig(joinpath(@OUTPUT, "posterior_integration.svg")) # hide
 ```
 \output{./code/thermint}
 \fig{./code/output/posterior_integration.svg}
+
+As you can see, it's not ideal either. If we now plot all our results together :
+
+```julia:./code/thermint
+bar(["log p(y)", "TI", "Prior", "Posterior"], [logpy, TI_logpy[end], prior_logpy[end], posterior_logpy[end]], lab="", ylabel="log Z") # hide
+savefig(joinpath(@OUTPUT, "comparison_methods.svg")) # hide
+```
+\output{./code/thermint}
+\fig{./code/output/comparison_methods.svg}
+
+We can see that TI gives the most accurate result!
+Of course other methods exist which I did not cover like Bayesian quadrature and others but this should give you a good idea on what is Thermodynamic Integration.

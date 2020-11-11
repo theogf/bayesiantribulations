@@ -2,6 +2,7 @@
 @def hasmath = true
 @def hascode = false
 @def comment_section = true
+@def blog_post = true
 
 
 # ICML 2020

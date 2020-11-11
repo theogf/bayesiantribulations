@@ -6,6 +6,7 @@
 
 ## Mathematical Notes
 
+- [Thermodynamic integration](./thermint) (WIP!)
 - [Gaussian Process Derivations](./gpderivations) (Updated 24/07)
 
 ## Research Notes

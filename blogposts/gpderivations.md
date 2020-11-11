@@ -1,6 +1,8 @@
 @def title = "Gaussian Process Important derivations"
 @def hasmath = true
 @def hascode = true
+@def blogpost = true
+@def comment_section = true
 \newcommand{\KL}{\text{KL}}
 \newcommand{\tr}{\text{tr}}
 # Gaussian Process important derivations
