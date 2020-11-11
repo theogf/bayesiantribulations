@@ -20,11 +20,11 @@ you might not want. Indicate directories by ending the name with a `/`.
 -->
 @def ignore = ["node_modules/"]
 
-<!-----------------------------------------------------
+<!-- ---------------------------------------------------
 Add here global latex commands to use throughout your
 pages. It can be math commands but does not need to be.
 For instance:
-------------------------------------------------------->
+----------------------------------------------------- -->
 \newcommand{\deriv}[2]{\frac{d#1}{d#2}}
 \newcommand{\derivk}[1]{\frac{dk(\boldsymbol{x},\boldsymbol{x}')}{d#1}}
 \newcommand{\norm}[1]{||#1||}
