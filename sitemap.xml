@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-    <loc>https://theogf.github.io/bayesiantribulations/blogposts/icml20/index.html</loc>
-    <lastmod>2020-11-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://theogf.github.io/bayesiantribulations/index.html</loc>
-    <lastmod>2020-11-10</lastmod>
+    <loc>https://theogf.github.io/bayesiantribulations/blogposts/thermint/index.html</loc>
+    <lastmod>2020-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://theogf.github.io/bayesiantribulations/blogposts/gpderivations/index.html</loc>
-    <lastmod>2020-07-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-</url>
-<url>
-    <loc>https://theogf.github.io/bayesiantribulations/blogposts/thermint/index.html</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://theogf.github.io/bayesiantribulations/blogposts/index.html</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://theogf.github.io/bayesiantribulations/index.html</loc>
+    <lastmod>2020-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>https://theogf.github.io/bayesiantribulations/publications/index.html</loc>
-    <lastmod>2020-11-10</lastmod>
+    <lastmod>2020-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>https://theogf.github.io/bayesiantribulations/blogposts/icml20/index.html</loc>
+    <lastmod>2020-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
