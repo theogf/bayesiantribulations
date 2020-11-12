@@ -9,7 +9,7 @@ The website_* must be defined for the RSS to work
 @def prepath = "bayesiantribulations"
 @def github_account = "theogf/bayesiantribulations"
 @def require_cookie_consent = true
-@def author = "Theo Galy-Fajou"
+@def author = "Théo Galy-Fajou"
 @def comment_section = false
 @def blog_post = false
 

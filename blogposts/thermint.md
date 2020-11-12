@@ -112,8 +112,9 @@ We take $y = -10$ to make a clear difference between $U_A$ and $U_B$
 
 Of course the posterior can be found analytically but this will help us to evaluate different approaches.
 ```julia:./code/thermint
-using Plots, Distributions, LaTeXStrings; pyplot()
-default(lw = 2.0, legendfontsize = 15.0, labelfontsize = 15.0)
+using Plots, Distributions, LaTeXStrings
+pyplot() # hide
+default(lw = 2.0, legendfontsize = 15.0, labelfontsize = 15.0) # hide
 σ_p = 1.0 # Define your standard deviation for the prior
 σ_l = 1.0 # Define your standard deviation for the likelihood
 μ_p = 10.0 # define the mean of your prior

@@ -20,7 +20,8 @@ $$
 using KernelFunctions, LinearAlgebra, ForwardDiff, Plots, LaTeXStrings
 using Random: seed! # hide
 seed!(42) # hide
-pyplot(); default(guidefontsize=20.0, tickfontsize= 15.0)#hide
+pyplot() # hide
+default(guidefontsize=20.0, tickfontsize= 15.0) # hide
 D = 3
 μ = randn(D)
 μ₀ = randn(D)

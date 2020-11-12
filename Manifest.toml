@@ -545,9 +545,9 @@ version = "1.1.1"
 
 [[RecipesPipeline]]
 deps = ["Dates", "NaNMath", "PlotUtils", "RecipesBase"]
-git-tree-sha1 = "d9aeaf4d42a999f33198b71f48a5ad26aaf3d033"
+git-tree-sha1 = "9ea2f5bf1b26918b16e9f885bb8e05206bfc2144"
 uuid = "01d81517-befc-4cb6-b9ec-a95719d0359c"
-version = "0.2.0"
+version = "0.2.1"
 
 [[Reexport]]
 deps = ["Pkg"]
