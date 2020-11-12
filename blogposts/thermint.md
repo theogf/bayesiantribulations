@@ -200,6 +200,8 @@ savefig(joinpath(@OUTPUT, "thermint.svg")) # hide
 \output{./code/thermint}
 \fig{./code/output/thermint.svg}
 
+## Other approaches
+
 Now that's great but how does it compare to other methods?
 Well we want to compute the integral $p(y) = \int p(y|x)p(x)dx$. The most intuitive way is to sample from the prior $p(x)$ to perform a Monte-Carlo integration:
 
