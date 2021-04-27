@@ -2,7 +2,7 @@
 @def hasmath = true
 @def comment_section = true
 @def blog_post = true
-@def hacode = true
+@def hascode = true
 
 # Thermodynamic Integration
 
