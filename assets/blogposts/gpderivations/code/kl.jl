@@ -7,5 +7,5 @@ end
 plot(heatmap(analytic,title="Analytic"), # hide
 		heatmap(autodiff,title="AutoDiff"), # hide
 		heatmap(analytic-autodiff,title="Difference"), # hide
-		yflip=true,layout=(1,D), ticks = 1:D^2, clims=extrema(vcat(analytic,autodiff))) # hide
+		yflip=true, layout=(D, 1), ticks = 1:D^2, clims=extrema(vcat(analytic,autodiff))) # hide
 savefig(joinpath(@OUTPUT,"d2KLdSigmaSigma.svg")) # hide
