@@ -16,3 +16,13 @@ We want to smooth out the movement of the mouse and infer a general trajectory o
 
 
 The basic principle of the Kalman filter is to consider the model as a **hidden Markov Chain model**.
+
+
+
+Unscented Kalman filter:
+
+- Transform the sigma points
+- Estimate the new mean and covariance from the transformed points
+- Create again new sigma points from new parameters to predict observations-
+- Compute differences
+- Update the mean/covariance

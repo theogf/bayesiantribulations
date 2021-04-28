@@ -1,7 +1,7 @@
 @def title = "Automatic Conditional Conjugacy for Gaussian Processes"
 @def hasmath = true
 @def comment_section = true
-@def hacode = true
+@def hascode = true
 
 # Automatic Conditional Conjugacy for Gaussian Processes
 
