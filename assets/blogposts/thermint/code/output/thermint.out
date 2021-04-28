@@ -1,6 +1,6 @@
 MethodError: no method matching getproperty(::Char, ::String)
 Closest candidates are:
-  getproperty(!Matched::PyPlot.ColorMap, ::AbstractString) at /home/runner/.julia/packages/PyPlot/XHEG0/src/colormaps.jl:26
-  getproperty(!Matched::PyCall.PyObject, ::AbstractString) at /home/runner/.julia/packages/PyCall/BcTLp/src/PyCall.jl:311
   getproperty(!Matched::PyPlot.Figure, ::AbstractString) at /home/runner/.julia/packages/PyPlot/XHEG0/src/PyPlot.jl:66
+  getproperty(!Matched::PyPlot.LazyPyModule, ::AbstractString) at /home/runner/.julia/packages/PyPlot/XHEG0/src/plot3d.jl:16
+  getproperty(!Matched::PyPlot.ColorMap, ::AbstractString) at /home/runner/.julia/packages/PyPlot/XHEG0/src/colormaps.jl:26
   ...
