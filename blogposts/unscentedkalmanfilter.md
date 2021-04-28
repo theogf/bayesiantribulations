@@ -12,7 +12,7 @@ Let's start with a topic so widely used in signal processing: the Kalman filter.
 To understand how this works we are going to follow a simple example along the whole post:
 **mouse movement tracking**.
 Let's assume that every small time step $t$ we measure where the mouse is and save this information as $Y_t= [y^1_t, y^2_t]$.
-We want to smooth out the movement of the mouse and infer a general trajectory of the mouse that we define as $X_t=
+We want to smooth out the movement of the mouse and infer a general trajectory of the mouse that we define as $X_t=$
 
 
 The basic principle of the Kalman filter is to consider the model as a **hidden Markov Chain model**.

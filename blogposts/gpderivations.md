@@ -1,8 +1,10 @@
-@def title = "Gaussian Process Important derivations"
-@def hasmath = true
-@def hascode = true
-@def blogpost = true
-@def comment_section = true
++++
+title = "Gaussian Process Important derivations"
+hasmath = true
+hascode = true
+blogpost = true
+comment_section = true
++++
 \newcommand{\KL}{\text{KL}}
 \newcommand{\tr}{\text{tr}}
 # Gaussian Process important derivations
@@ -25,9 +27,9 @@ default(guidefontsize=20.0, tickfontsize= 15.0) # hide
 D = 3
 μ = randn(D)
 μ₀ = randn(D)
-Σ = rand(D, D) |> x->x*x' # Positive definite matrix
-K = rand(D, D) |> x->x*x'
-L = cholesky(Σ).L
+Σ = rand(D, D) |> x -> x * x' + I # Positive definite matrix
+K = rand(D, D) |> x-> x * x' + I
+L = cholesky(Σ).L # Cholesky of the covariance Σ
 KL(μ, Σ::Matrix, μ₀ ,K) =
 	0.5*(logdet(K) - logdet(Σ) - length(μ) +
 		tr(inv(K) * Σ) + (μ₀ - μ)' * inv(K) * (μ₀ - μ))
@@ -64,7 +66,7 @@ analytic = dKL_dμ(K, μ, μ₀)
 autodiff = ForwardDiff.gradient(μ) do x
 	KL(x, Σ, μ₀, K)
 end
-p = bar(abs.(analytic - autodiff),xlabel="μᵢ",ylabel=L"\Delta \frac{dKL}{d\mu_i}", label = "", xticks = 1:D, xformatter = x->string(round(Float64(x), digits = 2))) # hide
+p = bar(1:D, abs.(analytic - autodiff), xlabel="μᵢ", ylabel=L"\Delta \frac{dKL}{d\mu_i}", label = "", xticks = 1:D) # hide
 savefig(joinpath(@OUTPUT, "dKLdmu.svg")) # hide
 ```
 \output{./code/kl}
@@ -116,10 +118,10 @@ analytic = d2KL_dμμ(K)
 autodiff = ForwardDiff.hessian(μ) do x
 	KL(x, Σ, μ₀, K)
 end
-plot(heatmap(analytic,title="Analytic"),
-		heatmap(autodiff,title="AutoDiff"),
-		heatmap(analytic-autodiff,title="Difference"),
-	yflip=true,layout=(1,D), ticks = 1:D, clims=extrema(vcat(analytic,autodiff))) # hide
+plot(heatmap(analytic, title="Analytic"), # hide
+		heatmap(autodiff, title="AutoDiff"), # hide
+		heatmap(analytic - autodiff,title="Difference"), # hide
+	yflip=true,layout=(D, 1), ticks = 1:D, clims=extrema(vcat(analytic,autodiff))) # hide
 savefig(joinpath(@OUTPUT,"d2KLdmumu.svg")) # hide
 ```
 \fig{./code/output/d2KLdmumu.svg}
@@ -133,7 +135,7 @@ end
 plot(heatmap(analytic,title="Analytic"), # hide
 		heatmap(autodiff,title="AutoDiff"), # hide
 		heatmap(analytic-autodiff,title="Difference"), # hide
-		yflip=true,layout=(1,D), ticks = 1:D^2, clims=extrema(vcat(analytic,autodiff))) # hide
+		yflip=true, layout=(D, 1), ticks = 1:D^2, clims=extrema(vcat(analytic,autodiff))) # hide
 savefig(joinpath(@OUTPUT,"d2KLdSigmaSigma.svg")) # hide
 ```
 
