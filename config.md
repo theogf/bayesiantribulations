@@ -28,6 +28,7 @@ pages.
 \newcommand{\deriv}[2]{\frac{d#1}{d#2}}
 \newcommand{\derivk}[1]{\frac{dk(\boldsymbol{x},\boldsymbol{x}')}{d#1}}
 \newcommand{\expec}[2]{\mathbb{E}_{#1}\left[#2 \right]}
+\newcommand{\entropy}[1]{\mathcal{H}\left[#1\right]}
 \newcommand{\norm}[1]{||#1||}
 \newcommand{\KL}{\text{KL}}
 \newcommand{\half}{\frac{1}{2}}

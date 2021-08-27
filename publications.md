@@ -3,6 +3,10 @@
 
 # Publications
 
+## Journal papers
+
+- [Entropy 21'](https://www.mdpi.com/journal/entropy) ["Flexible and Efficient Inference with Particles for the Variational Gaussian Approximation"](https://www.mdpi.com/1099-4300/23/8/990), **T. Galy-Fajou**, V. Perrone, M. Opper [code](https://github.com/theogf/ParticleFlow_Exp)
+
 ## Conference papers
 
 - [AISTATS 20'](https://www.aistats.org/) ["Automated Augmented Conjugate Inference for Non-conjugate Gaussian Process Models"](https://arxiv.org/abs/2002.11451), **T. Galy-Fajou**, F. Wenzel, M. Opper [code](https://github.com/theogf/AutoConjGP_Exp)
@@ -27,3 +31,4 @@
   - [AbstractGPs.jl](https://github.com/JuliaGaussianProcesses/AbstractGPs.jl)
   - [AdvancedVI.jl](https://github.com/TuringLang/AdvancedVI.jl)
   - [DeterminantalPointProcesses.jl](https://github.com/theogf/DeterminantalPointProcesses.jl)
+  - [Turkie.jl](https://github.com/theogf/Turkie.jl)
