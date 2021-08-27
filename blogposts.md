@@ -8,7 +8,8 @@
 
 - [Thermodynamic integration](./thermint) (Updated 29/11)
 - [Gaussian Process Derivations](./gpderivations) (Updated 24/07)
-- [Unscented Kalman Filter](./unscentedkalmanfilter) (WIP)
+- <!-- [Unscented Kalman Filter](./unscentedkalmanfilter) (WIP) -->
+- <!-- [Variational Message Passing](./messagepassing) (WIP) -->
 
 ## Research Notes
 
